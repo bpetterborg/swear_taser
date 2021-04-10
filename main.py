@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-
-# tasers me when i swear
+#
+# tases me everytime I swear
+#
+# It gets input from Google Cloud Speech Recognition,
+# decides if it's a swear from a list, and if it is,
+# it sends an arduino the signal to swear me over 
+# serial.
 
 
 # imports
@@ -15,12 +20,6 @@ mic = sr.Microphone(device_index=3) # CHANGE THIS TO THE CORRECT MIC
 
 PORT = '/dev/tty/USB0' # set this to the USB port
 arduino = serial.Serial(PORT, 9600, timeout=.1)
-
-# open swears list
-swears_file = open('swears.csv')
-
-with open(swears_file, newline='') as csvfile:
-	swears_list = list(csv.reader(csvfile))
 
 
 # connect to arduino over serial, detect swears
@@ -41,6 +40,10 @@ while True:
 		# run the recognizer on it
 		r.recognize_google(audio)
 
-		if input in swears_list:
-			arduino.write('1')
+		with open('swears.csv', 'rt') as f:
+			reader = csv.reader(f, delimiter=',')
+
+			for row in reader:
+				if words == row[0]:
+					print("is in file")
 
