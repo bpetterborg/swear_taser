@@ -11,7 +11,6 @@
 # imports
 import speech_recognition as sr	# self explanatory 
 import serial					# to communicate with arduino
-import time						#
 
 # variables
 r = sr.Recognizer()
@@ -20,6 +19,7 @@ mic = sr.Microphone(device_index=3) # CHANGE THIS TO THE CORRECT MIC
 PORT = '/dev/tty/USB0' # set this to the USB port
 arduino = serial.Serial(PORT, 9600, timeout=.1)
 
+# swear list
 swears = [
 	'fuck',
 	'motherfucker', 
@@ -55,7 +55,7 @@ while True:
 
 		# run the recognizer on it
 		words = r.recognize_google(audio)
-		print(words)
+		print(words) # print what user says
 
 		if any(element in swears for element in words.split()):
 			print('Detected swear, tasing')
