@@ -16,7 +16,7 @@ import serial					# to communicate with arduino
 r = sr.Recognizer()
 mic = sr.Microphone(device_index=3) # CHANGE THIS TO THE CORRECT MIC
 
-PORT = '/dev/tty/USB0' # set this to the USB port
+PORT = '/dev/ttyUSB0' # set this to the USB port
 arduino = serial.Serial(PORT, 9600, timeout=.1)
 
 # swear list
