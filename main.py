@@ -12,7 +12,6 @@
 import speech_recognition as sr	# self explanatory 
 import serial					# to communicate with arduino
 import time						#
-import csv						# for reading swear list 
 
 # variables
 r = sr.Recognizer()
@@ -21,12 +20,29 @@ mic = sr.Microphone(device_index=3) # CHANGE THIS TO THE CORRECT MIC
 PORT = '/dev/tty/USB0' # set this to the USB port
 arduino = serial.Serial(PORT, 9600, timeout=.1)
 
+swears = [
+	'fuck',
+	'motherfucker', 
+	'fucker', 
+	'bitch', 
+	'bitching', 
+	'cum', 
+	'shit',
+	'shitting',
+	'cunt',
+	'damn',
+	'goddamn',
+	'asshole',
+	'ass',
+	'cock'
+]
+
 
 # connect to arduino over serial, detect swears
 while True:
 	
 	# display messages from arduino
-	data = arduino.readline()[:-2]	# thing on end removes line-endings
+	data = arduino.readline()[:-2]	# [:-2] removes line-endings
 
 	# speech recognition
 	with mic as source:
@@ -38,12 +54,12 @@ while True:
 		audio = r.listen(source)
 
 		# run the recognizer on it
-		r.recognize_google(audio)
+		words = r.recognize_google(audio)
+		print(words)
 
-		with open('swears.csv', 'rt') as f:
-			reader = csv.reader(f, delimiter=',')
+		if any(element in swears for element in words.split()):
+			print('Detected swear, tasing')
+			arduino.write(1)
 
-			for row in reader:
-				if words == row[0]:
-					print("is in file")
-
+		else:
+			print('No swears detected.')
