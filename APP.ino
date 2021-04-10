@@ -7,7 +7,7 @@
  */
 
 int incomingData;
-int TASING_TIME = 1000;
+int TASING_TIME = 1000; // how long to tase for
 
 void setup() 
 {
