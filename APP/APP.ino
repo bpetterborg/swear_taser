@@ -18,11 +18,13 @@ void setup() {
   Serial.write(TOKEN);
 }
 
-void loop() 
-{
+void loop() {
+  
   while (Serial.available()) {
     incomingData = Serial.read();
+    
     if (incomingData == TOKEN) {
+      
       digitalWrite(13, HIGH);
       Serial.write("STARTING \n");
       delay(TIME_ON);
